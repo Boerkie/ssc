@@ -53,15 +53,14 @@ public class Dining {
 	 * @param amount the total amount of the dining bill as a string
 	 * @param creditCardNumber the number of the credit card used to pay for the dining bill
 	 * @param merchantNumber the merchant number of the restaurant where the dining occurred
-	 * @param month the month of the dining event
 	 * @param day the day of the dining event
+	 * @param month the month of the dining event
 	 * @param year the year of the dining event
 	 * @return the dining event
 	 */
-	public static Dining createDining(String amount, String creditCardNumber, String merchantNumber, int month,
-			int day, int year) {
-		return new Dining(MonetaryAmount.valueOf(amount), creditCardNumber, merchantNumber, new SimpleDate(month, day,
-				year));
+	public static Dining createDining(String amount, String creditCardNumber, String merchantNumber, int day, int month,
+			 int year) {
+		return new Dining(MonetaryAmount.valueOf(amount), creditCardNumber, merchantNumber, new SimpleDate(day, month, year));
 	}
 
 	/**

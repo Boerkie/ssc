@@ -7,7 +7,8 @@ import java.util.GregorianCalendar;
 import java.text.SimpleDateFormat;
 
 /**
- * A simple wrapper around a calendar for working with dates like 12/29/1977. Does not consider time.
+ * A simple wrapper around a calendar for working with dates like 12/29/1977.
+ * Does not consider time.
  */
 public class SimpleDate implements Serializable {
 
@@ -16,12 +17,13 @@ public class SimpleDate implements Serializable {
 	private GregorianCalendar base;
 
 	/**
-	 * Create a new simple date.
-	 * @param month the month
+	 * Create a new simple date. Follow dd/MM/yyyy because logic.
+	 * 
 	 * @param day the day
+	 * @param month the month
 	 * @param year the year
 	 */
-	public SimpleDate(int month, int day, int year) {
+	public SimpleDate(int day, int month, int year) {
 		init(new GregorianCalendar(year, month - 1, day));
 	}
 
@@ -49,6 +51,7 @@ public class SimpleDate implements Serializable {
 
 	/**
 	 * Returns this simple date as a <code>java.util.Date</code>
+	 * 
 	 * @return this simple date as a Date
 	 */
 	public Date asDate() {
@@ -57,6 +60,7 @@ public class SimpleDate implements Serializable {
 
 	/**
 	 * Returns this date in milliseconds since 1970.
+	 * 
 	 * @return
 	 */
 	public long inMilliseconds() {
@@ -88,7 +92,9 @@ public class SimpleDate implements Serializable {
 	}
 
 	/**
-	 * Converts the specified date to a SimpleDate. Will trim hour, minute, second, and millisecond fields.
+	 * Converts the specified date to a SimpleDate. Will trim hour, minute, second,
+	 * and millisecond fields.
+	 * 
 	 * @param date the java.util.Date
 	 * @return the simple date
 	 */
@@ -97,17 +103,19 @@ public class SimpleDate implements Serializable {
 	}
 
 	/**
-	 * Converts the specified long time value to a SimpleDate. Will trim hour, minute, second, and millisecond fields.
+	 * Converts the specified long time value to a SimpleDate. Will trim hour,
+	 * minute, second, and millisecond fields.
+	 * 
 	 * @param time time in millseconds since 1970
 	 * @return the time as a SimpleDate
 	 */
 	public static SimpleDate valueOf(long time) {
 		return new SimpleDate(time);
 	}
-	
+
 	@Override
 	public String toString() {
-        return new SimpleDateFormat().format(base.getTime());
-    }
+		return new SimpleDateFormat().format(base.getTime());
+	}
 
 }

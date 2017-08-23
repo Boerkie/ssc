@@ -1,5 +1,7 @@
 package rewards.internal;
 
+import common.money.MonetaryAmount;
+import rewards.AccountContribution;
 import rewards.Dining;
 import rewards.RewardConfirmation;
 import rewards.RewardNetwork;
@@ -12,10 +14,12 @@ import rewards.internal.reward.RewardRepository;
 /**
  * Rewards an Account for Dining at a Restaurant.
  * 
- * The sole Reward Network implementation. This object is an application-layer service responsible for coordinating with
- * the domain-layer to carry out the process of rewarding benefits to accounts for dining.
+ * The sole Reward Network implementation. This object is an application-layer
+ * service responsible for coordinating with the domain-layer to carry out the
+ * process of rewarding benefits to accounts for dining.
  * 
- * Said in other words, this class implements the "reward account for dining" use case.
+ * Said in other words, this class implements the "reward account for dining"
+ * use case.
  */
 public class RewardNetworkImpl implements RewardNetwork {
 
@@ -27,9 +31,12 @@ public class RewardNetworkImpl implements RewardNetwork {
 
 	/**
 	 * Creates a new reward network.
+	 * 
 	 * @param accountRepository the repository for loading accounts to reward
-	 * @param restaurantRepository the repository for loading restaurants that determine how much to reward
-	 * @param rewardRepository the repository for recording a record of successful reward transactions
+	 * @param restaurantRepository the repository for loading restaurants that
+	 * determine how much to reward
+	 * @param rewardRepository the repository for recording a record of successful
+	 * reward transactions
 	 */
 	public RewardNetworkImpl(AccountRepository accountRepository, RestaurantRepository restaurantRepository,
 			RewardRepository rewardRepository) {
@@ -39,11 +46,12 @@ public class RewardNetworkImpl implements RewardNetwork {
 	}
 
 	public RewardConfirmation rewardAccountFor(Dining dining) {
-        final Account account = accountRepository.findByCreditCard(dining.getCreditCardNumber());
-        final Restaurant merchantNumber = restaurantRepository.findByMerchantNumber(dining.getMerchantNumber());
+		final Account account = accountRepository.findByCreditCard(dining.getCreditCardNumber());
+		final Restaurant merchantNumber = restaurantRepository.findByMerchantNumber(dining.getMerchantNumber());
 
-        // TODO-01: Reward an account per the sequence diagram
-		// TODO-02: Return the corresponding reward confirmation
-		return null;
+		MonetaryAmount benefit = merchantNumber.calculateBenefitFor(account, dining);
+		AccountContribution contribution = account.makeContribution(benefit);
+		accountRepository.updateBeneficiaries(account);
+		return rewardRepository.confirmReward(contribution, dining);
 	}
 }
