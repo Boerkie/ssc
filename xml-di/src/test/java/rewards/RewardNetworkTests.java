@@ -7,25 +7,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.AbstractApplicationContext;
 
 import common.money.MonetaryAmount;
-import config.RewardsConfig;
 
 /**
- * A system test that verifies the components of the RewardNetwork application work together to reward for dining
- * successfully. Uses Spring to bootstrap the application for use in a test environment.
+ * A system test that verifies the components of the RewardNetwork application
+ * work together to reward for dining successfully. Uses Spring to bootstrap the
+ * application for use in a test environment.
  *
- * TODO-01: Run this test before making any changes.  It should pass.
  */
-public class RewardNetworkTests  {
+public class RewardNetworkTests {
 
 	/**
 	 * The object being tested.
 	 */
 	private RewardNetwork rewardNetwork;
-	
+
 	@Before
 	public void setUp() {
 		// Create the test configuration for the application from two classes:
@@ -35,12 +32,11 @@ public class RewardNetworkTests  {
 		rewardNetwork = context.getBean(RewardNetwork.class);
 
 	}
-	
-
 
 	@Test
 	public void rewardForDining() {
-		// create a new dining of 100.00 charged to credit card '1234123412341234' by merchant '123457890' as test input
+		// create a new dining of 100.00 charged to credit card '1234123412341234' by
+		// merchant '123457890' as test input
 		Dining dining = Dining.createDining("100.00", "1234123412341234", "1234567890");
 
 		// call the 'rewardNetwork' to test its rewardAccountFor(Dining) method

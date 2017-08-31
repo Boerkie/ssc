@@ -10,7 +10,6 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import config.RewardsConfig;
 
 @Configuration
-//TestInfrastructureConfig used in tests, and the tests also requires the RewardNetwork
 @Import(RewardsConfig.class)
 public class TestInfrastructureConfig {
 

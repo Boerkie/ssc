@@ -1,4 +1,4 @@
-package rewards;
+package rewards.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -9,30 +9,36 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 
 import common.money.MonetaryAmount;
+import rewards.AccountContribution;
+import rewards.Dining;
+import rewards.RewardConfirmation;
+import rewards.RewardNetwork;
+import rewards.TestInfrastructureConfig;
 
-/**
- * A system test that verifies the components of the RewardNetwork application
- * work together to reward for dining successfully. Uses Spring to bootstrap the
- * application for use in a test environment.
- * 
- */
 public class RewardNetworkTests {
 
 	/**
-	 * The object being tested.
+	 * 1. Create the system test class
 	 */
 	private RewardNetwork rewardNetwork;
 
+	/**
+	 * 2. Implement test setup logic
+	 */
 	@Before
-	public void setUp() {
-		// Create the test configuration for the application from two classes:
+	public void setUp() throws Exception {
+
+		// Call SpringApplication.run, providing it the TestInfrastructureConfig.class
+		// that you want to load
 		ApplicationContext context = SpringApplication.run(TestInfrastructureConfig.class);
 
-		// Get the bean to use to invoke the application
+		// Ask the context to get the rewardNetwork bean
 		rewardNetwork = context.getBean(RewardNetwork.class);
-
 	}
 
+	/**
+	 * 3. Implement test logic
+	 */
 	@Test
 	public void testRewardForDining() {
 		// create a new dining of 100.00 charged to credit card '1234123412341234' by
@@ -40,7 +46,6 @@ public class RewardNetworkTests {
 		Dining dining = Dining.createDining("100.00", "1234123412341234", "1234567890");
 
 		// call the 'rewardNetwork' to test its rewardAccountFor(Dining) method
-		// this fails if you have selected an account without beneficiaries!
 		RewardConfirmation confirmation = rewardNetwork.rewardAccountFor(dining);
 
 		// assert the expected reward confirmation results
@@ -51,7 +56,7 @@ public class RewardNetworkTests {
 		AccountContribution contribution = confirmation.getAccountContribution();
 		assertNotNull(contribution);
 
-		// the contribution account number should be '123456789'
+		// the account number should be '123456789'
 		assertEquals("123456789", contribution.getAccountNumber());
 
 		// the total contribution amount should be 8.00 (8% of 100.00)

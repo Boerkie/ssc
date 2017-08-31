@@ -11,9 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Repository;
 
 import common.money.Percentage;
 
@@ -23,8 +21,6 @@ import common.money.Percentage;
  * This implementation caches restaurants to improve performance. The cache is populated on initialization and cleared
  * on destruction.
  */
-//TODO-11: Remove this @Repository annotation and the @Autowired annotation below.
-@Repository
 public class JdbcRestaurantRepository implements RestaurantRepository {
 
 	private DataSource dataSource;
@@ -49,7 +45,6 @@ public class JdbcRestaurantRepository implements RestaurantRepository {
 	
 	public JdbcRestaurantRepository(){}
 	
-	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
@@ -63,9 +58,6 @@ public class JdbcRestaurantRepository implements RestaurantRepository {
 	 * Helper method that populates the {@link #restaurantCache restaurant object cache} from rows in the T_RESTAURANT
 	 * table. Cached restaurants are indexed by their merchant numbers. This method is called on initialization.
 	 */
-	//	TODO-12: Remove this @PostConstruct annotation.  In a previous step we should
-	//	have already instructed Spring to call this method on startup.
-	@PostConstruct
 	void populateRestaurantCache() {
 		restaurantCache = new HashMap<String, Restaurant>();
 		String sql = "select MERCHANT_NUMBER, NAME, BENEFIT_PERCENTAGE from T_RESTAURANT";
