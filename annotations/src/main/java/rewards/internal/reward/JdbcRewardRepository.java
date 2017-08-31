@@ -8,6 +8,9 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import rewards.AccountContribution;
 import rewards.Dining;
 import rewards.RewardConfirmation;
@@ -15,24 +18,30 @@ import rewards.RewardConfirmation;
 import common.datetime.SimpleDate;
 
 /**
- * JDBC implementation of a reward repository that records the result of a reward transaction by inserting a reward
- * confirmation record.
+ * JDBC implementation of a reward repository that records the result of a
+ * reward transaction by inserting a reward confirmation record.
+ * 
+ * Annotate the class with an appropriate stereotype annotation to cause
+ * component-scan to detect and load this bean.
  */
 
-/* TODO-04: Annotate the class with an appropriate stereotype annotation 
- * to cause component-scan to detect and load this bean.
- * Configure Dependency Injection for dataSource.  
- * Decide if you should use field level or setter injection. 
- */
-
+@Repository
 public class JdbcRewardRepository implements RewardRepository {
 
 	private DataSource dataSource;
 
 	/**
 	 * Sets the data source this repository will use to insert rewards.
+	 * 
 	 * @param dataSource the data source
+	 * 
+	 * Configure Dependency Injection for dataSource. Decide if you should use field
+	 * level or setter injection.
+	 * 
+	 * Can see from the method signature that this makes use of
+	 * Method-injection(setter)
 	 */
+	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}

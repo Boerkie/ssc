@@ -7,7 +7,9 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Repository;
 
 import common.money.MonetaryAmount;
 import common.money.Percentage;
@@ -16,21 +18,26 @@ import common.money.Percentage;
  * Loads accounts from a data source using the JDBC API.
  */
 
-/* TODO-05: Annotate the class with an appropriate stereotype annotation 
- * to cause component-scan to detect and load this bean.
- * Configure Dependency Injection for dataSource.  
- * Decide if you should use field level or setter injection. 
- */
 
+/**
+ * Annotate the class with an appropriate stereotype annotation to cause
+ * component-scan to detect and load this bean.
+ */
+@Repository
 public class JdbcAccountRepository implements AccountRepository {
 
 	private DataSource dataSource;
 
 	/**
 	 * Sets the data source this repository will use to load accounts.
+	 * 
 	 * @param dataSource the data source
+	 * 
+	 * Can see from the method signature that this makes use of
+	 * Method-injection(setter)
 	 */
 
+	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
@@ -109,11 +116,13 @@ public class JdbcAccountRepository implements AccountRepository {
 	}
 
 	/**
-	 * Map the rows returned from the join of T_ACCOUNT and T_ACCOUNT_BENEFICIARY to an fully-reconstituted Account
-	 * aggregate.
+	 * Map the rows returned from the join of T_ACCOUNT and T_ACCOUNT_BENEFICIARY to
+	 * an fully-reconstituted Account aggregate.
+	 * 
 	 * @param rs the set of rows returned from the query
 	 * @return the mapped Account aggregate
-	 * @throws SQLException an exception occurred extracting data from the result set
+	 * @throws SQLException an exception occurred extracting data from the result
+	 * set
 	 */
 	private Account mapAccount(ResultSet rs) throws SQLException {
 		Account account = null;
@@ -135,10 +144,13 @@ public class JdbcAccountRepository implements AccountRepository {
 	}
 
 	/**
-	 * Maps the beneficiary columns in a single row to an AllocatedBeneficiary object.
+	 * Maps the beneficiary columns in a single row to an AllocatedBeneficiary
+	 * object.
+	 * 
 	 * @param rs the result set with its cursor positioned at the current row
 	 * @return an allocated beneficiary
-	 * @throws SQLException an exception occurred extracting data from the result set
+	 * @throws SQLException an exception occurred extracting data from the result
+	 * set
 	 */
 	private Beneficiary mapBeneficiary(ResultSet rs) throws SQLException {
 		String name = rs.getString("BENEFICIARY_NAME");
