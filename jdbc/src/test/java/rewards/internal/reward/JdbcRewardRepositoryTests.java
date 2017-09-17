@@ -23,8 +23,8 @@ import common.money.MonetaryAmount;
 import common.money.Percentage;
 
 /**
- * Tests the JDBC reward repository with a test data source to verify data access and relational-to-object mapping
- * behavior works as expected.
+ * Tests the JDBC reward repository with a test data source to verify data
+ * access and relational-to-object mapping behavior works as expected.
  */
 public class JdbcRewardRepositoryTests {
 
@@ -60,18 +60,20 @@ public class JdbcRewardRepositoryTests {
 
 	private void verifyRewardInserted(RewardConfirmation confirmation, Dining dining) throws SQLException {
 		assertEquals(1, getRewardCount());
-		
-		//	TODO-02: Use the JdbcTemplate to query for a map of all values in the T_REWARD table based on the
-		// 	confirmationNumber. After making the changes, execute the test class to verify its 
-		//	successful execution.
-		
-		Map<String, Object> values = null;
+
+		// Use the JdbcTemplate to query for a map of all values in the T_REWARD table
+		// based on the
+		// confirmationNumber. After making the changes, execute the test class to
+		// verify its
+		// successful execution.
+		Map<String, Object> values = jdbcTemplate.queryForMap("select * from T_REWARD where CONFIRMATION_NUMBER = ?",
+				confirmation.getConfirmationNumber());
+
 		verifyInsertedValues(confirmation, dining, values);
 	}
 
 	private void verifyInsertedValues(RewardConfirmation confirmation, Dining dining, Map<String, Object> values) {
-		assertEquals(confirmation.getAccountContribution().getAmount(), new MonetaryAmount((BigDecimal) values
-				.get("REWARD_AMOUNT")));
+		assertEquals(confirmation.getAccountContribution().getAmount(), new MonetaryAmount((BigDecimal) values.get("REWARD_AMOUNT")));
 		assertEquals(SimpleDate.today().asDate(), values.get("REWARD_DATE"));
 		assertEquals(confirmation.getAccountContribution().getAccountNumber(), values.get("ACCOUNT_NUMBER"));
 		assertEquals(dining.getAmount(), new MonetaryAmount((BigDecimal) values.get("DINING_AMOUNT")));
@@ -80,15 +82,11 @@ public class JdbcRewardRepositoryTests {
 	}
 
 	private int getRewardCount() throws SQLException {
-		// TODO-01: Use the JdbcTemplate to query for the number of rows in the T_REWARD table
-		return -1;
+		return jdbcTemplate.queryForObject("select count(*) from T_REWARD", Integer.class);
 	}
 
 	private DataSource createTestDataSource() {
-		return new EmbeddedDatabaseBuilder()
-			.setName("rewards")
-			.addScript("/rewards/testdb/schema.sql")
-			.addScript("/rewards/testdb/data.sql")
-			.build();
+		return new EmbeddedDatabaseBuilder().setName("rewards").addScript("/rewards/testdb/schema.sql")
+				.addScript("/rewards/testdb/data.sql").build();
 	}
 }
