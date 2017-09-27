@@ -10,6 +10,10 @@ import rewards.internal.restaurant.Restaurant;
 import rewards.internal.restaurant.RestaurantRepository;
 import rewards.internal.reward.RewardRepository;
 
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import common.money.MonetaryAmount;
 
 /**
@@ -42,15 +46,9 @@ public class RewardNetworkImpl implements RewardNetwork {
 		this.rewardRepository = rewardRepository;
 	}
 
-	/*
-     * TODO-05: Modify the transactional attributes of the rewardAccountFor() method below.
-	 * Switch the propagation level to require a new transaction whenever invoked.  
-	 * Re-run the RewardNetworkPropagationTests, it should now pass.
-	 * After a successful test, revert the propagation attribute to its original setting.
-	 */
-	
-	/* TODO-01: Add transactional annotation to identify this method as needing transactional behavior */
-	
+
+	/* Add transactional annotation to identify this method as needing transactional behavior */
+	@Transactional
 	public RewardConfirmation rewardAccountFor(Dining dining) {
 		Account account = accountRepository.findByCreditCard(dining.getCreditCardNumber());
 		Restaurant restaurant = restaurantRepository.findByMerchantNumber(dining.getMerchantNumber());

@@ -18,12 +18,6 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
  * A system test that demonstrates how propagation settings affect transactional execution.
  */
 
-/* TODO-04: Review the testPropagation() method below.  It runs rewardAccountFor() within an 
- * existing transaction and performs a manual rollback.  The assertions will succeed only if
- * a database commit actually occurs.  Run this test, initially it will fail - the data has 
- * been rolled back.  Proceed to the next step.
- */
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={SystemTestConfig.class})
 public class RewardNetworkPropagationTests {
